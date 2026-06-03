@@ -251,6 +251,7 @@ function ProgramBasicInfo({ programData, setProgramData, tagInput, setTagInput, 
               type="date"
               value={programData.startDate}
               onChange={(e) => setProgramData({ ...programData, startDate: e.target.value })}
+              min={new Date().toISOString().split("T")[0]}
             />
           </div>
 
@@ -261,6 +262,7 @@ function ProgramBasicInfo({ programData, setProgramData, tagInput, setTagInput, 
               type="date"
               value={programData.endDate}
               onChange={(e) => setProgramData({ ...programData, endDate: e.target.value })}
+              min={programData.startDate || new Date().toISOString().split("T")[0]}
             />
           </div>
 

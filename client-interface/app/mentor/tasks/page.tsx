@@ -48,6 +48,7 @@ export default function MentorTasks() {
     setCancellingTask,
     setCancelReason,
     handleCancelTask,
+    programDateRange,
   } = useMentorTasks();
 
   // ─── UI helpers ──────────────────────────────────────────────────────────
@@ -58,7 +59,12 @@ export default function MentorTasks() {
     ) : (
       <span className="px-2 py-1 bg-indigo-100 text-indigo-700 rounded text-xs font-medium">Roadmap</span>
     );
-
+  const today = new Date().toISOString().split("T")[0];
+  const minDate = programDateRange.startDate? (
+        new Date(programDateRange.startDate) > new Date(today)
+          ? programDateRange.startDate.split("T")[0]
+          : today
+      ): today;
   const getTaskAssignmentButton = (task: any, weekNumber: number) => {
     const as = task.assignmentStatus;
     if (!selectedMenteeForAssign)
@@ -758,7 +764,8 @@ export default function MentorTasks() {
                         type="date"
                         value={formData.dueDate}
                         onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
-                        min={new Date().toISOString().split('T')[0]}
+                        min={minDate}
+                        max={programDateRange.endDate?.split("T")[0] || undefined}
                         className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                       />
                     </div>

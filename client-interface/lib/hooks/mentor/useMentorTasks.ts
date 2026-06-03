@@ -82,6 +82,7 @@ export interface UseMentorTasksReturn {
   handleMenteeChange: (menteeId: string) => void;
   handleCreateCustomTask: (e: React.FormEvent) => Promise<void>;
   isCreatingTask: boolean;
+  programDateRange: { startDate: string;endDate: string;};
 
   // cancel
   cancellingTask: string | null;
@@ -126,6 +127,7 @@ export function useMentorTasks(): UseMentorTasksReturn {
   const [cancellingTask, setCancellingTask] = useState<string | null>(null);
   const [cancelReason, setCancelReason] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [programDateRange, setProgramDateRange] = useState<{startDate: string;endDate: string;}>({startDate: "",endDate: "",});
 
   // ─── Fetchers ─────────────────────────────────────────────────────────────
 
@@ -388,6 +390,7 @@ export function useMentorTasks(): UseMentorTasksReturn {
     (menteeId: string) => {
       const match = mentees.find((m) => m.menteeId === menteeId);
       setFormData((prev) => ({ ...prev, menteeId, enrollmentId: match?.enrollmentId || '' }));
+      setProgramDateRange({startDate: match?.enrollment?.program?.startDate || "",endDate: match?.enrollment?.program?.endDate || "",});
     },
     [mentees]
   );
@@ -450,5 +453,6 @@ export function useMentorTasks(): UseMentorTasksReturn {
     setCancellingTask,
     setCancelReason,
     handleCancelTask,
+    programDateRange,
   };
 }
